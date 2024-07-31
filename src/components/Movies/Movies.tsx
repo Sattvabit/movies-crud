@@ -24,7 +24,6 @@ function Movies() {
         const loggedInUser: any = jwt.verify(`${token}`, "secret");
 
         if (loggedInUser?.email) {
-          console.log(loggedInUser.email);
           const response = await fetch(
             `/api/movies?email=${loggedInUser.email}`,
             {
@@ -37,9 +36,7 @@ function Movies() {
           if (res.status === 200) {
             setMovies(res.movies);
           } else if (res.status === 404) {
-            toast.error(res.message, {
-              className: "bg-white text-black dark:bg-gray-800 dark:text-white",
-            });
+            push("/auth/sign-in");
           } else {
             toast.error(res.message, {
               className: "bg-white text-black dark:bg-gray-800 dark:text-white",
@@ -55,24 +52,11 @@ function Movies() {
           }, 2000);
         }
       } catch (error) {
-        console.error("Token verification failed:", error);
-        toast.error("You need to login first!!", {
-          className: "bg-white text-black dark:bg-gray-800 dark:text-white",
-        });
-
-        setTimeout(() => {
-          push("/auth/sign-in");
-        }, 2000);
+        push("/auth/sign-in");
       }
     } else {
       console.log("No token found in localStorage");
-      toast.error("You need to login first!!", {
-        className: "bg-white text-black dark:bg-gray-800 dark:text-white",
-      });
-
-      setTimeout(() => {
-        push("/auth/sign-in");
-      }, 2000);
+      push("/auth/sign-in");
     }
     setLoading(false);
   };
@@ -82,23 +66,21 @@ function Movies() {
   };
 
   return (
-    <div className="text-white p-4">
-      {" "}
+    <div className="text-white py-10 min-h-screen">
       <ToastContainer />
       {movies.length > 0 && !loading ? (
         <>
-          {" "}
-          <header className="flex justify-between items-center p-6">
+          <header className="flex justify-between items-center px-4 md:px-32 py-6">
             <div
               className="cursor-pointer"
               onClick={() => {
                 push("/movies/movie-form");
               }}
             >
-              <h1 className="flex items-center gap-2 text-xl md:text-3xl">
+              <p className="flex items-center gap-2 text-[14px] md:text-3xl">
                 My movies
                 <PlusCircle className="mt-1 md:mt-1.5" />
-              </h1>
+              </p>
             </div>
             <button
               className="flex items-center"
@@ -107,38 +89,42 @@ function Movies() {
                 push("/auth/sign-in");
               }}
             >
-              <span className="mr-2">Logout</span>
-              <svg className="h-10 w-8" fill="currentColor" viewBox="0 0 20 20">
+              <span className="mr-4 hidden md:block">Logout</span>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
                 <path
-                  fillRule="evenodd"
-                  d="M5 10a1 1 0 011-1h6a1 1 0 110 2H6a1 1 0 01-1-1z"
-                  clipRule="evenodd"
-                />
-                <path
-                  fillRule="evenodd"
-                  d="M10 4a1 1 0 011 1v10a1 1 0 11-2 0V5a1 1 0 011-1z"
-                  clipRule="evenodd"
+                  d="M18.6667 6.66667L16.7867 8.54667L18.8933 10.6667H8V13.3333H18.8933L16.7867 15.44L18.6667 17.3333L24 12L18.6667 6.66667ZM2.66667 2.66667H12V0H2.66667C1.2 0 0 1.2 0 2.66667V21.3333C0 22.8 1.2 24 2.66667 24H12V21.3333H2.66667V2.66667Z"
+                  fill="white"
                 />
               </svg>
             </button>
           </header>
-          <main className="px-6 py-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6 gap-10 ">
+          <main className="px-4 md:px-32">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 md:gap-6">
               {movies.map((movie, index) => (
                 <div
                   key={index}
-                  className="bg-[#0A2533] hover:bg-[#224957] p-4 rounded-lg shadow-lg cursor-pointer h-96 w-72"
+                  className="bg-[#0A2533] hover:bg-[#224957] p-1 md:p-1.5 rounded-lg shadow-lg cursor-pointer md:h-80"
                   onClick={() => handleEditMovie(movie, movie.id)}
                 >
-                  <div className=" flex justify-center items-center mb-4">
+                  <div className="flex justify-center items-center mb-4">
                     <img
                       src={movie.image}
                       alt={movie.title}
-                      className="rounded-md h-72 w-72 object-cover"
+                      className="rounded-md h-44 md:h-60 w-full object-cover"
                     />
                   </div>
-                  <h2 className="text-xl">{movie.title}</h2>
-                  <p className="text-gray-400">{movie.year}</p>
+                  <div className="p-1">
+                    <h2 className="text-sm md:text-xl ">{movie.title}</h2>
+                    <p className="text-xs md:text-[14px] text-gray-400">
+                      {movie.year}
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>
