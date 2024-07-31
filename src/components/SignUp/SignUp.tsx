@@ -2,6 +2,7 @@
 import { AppDispatch, RootState } from "@/store/store";
 import { addUser } from "@/store/userSlice";
 import { validateEmail, validatePassword } from "@/utils/utils";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -101,32 +102,13 @@ const SignUp = () => {
         className: "bg-white text-black dark:bg-gray-800 dark:text-white",
       });
     }
-
-    // if (usersData.findIndex((user) => user.email === formData.email) === -1) {
-    //   dispatch(
-    //     addUser({
-    //       email: formData.email,
-    //       password: formData.password,
-    //       movies: [],
-    //     })
-    //   );
-    //   toast.success("User added successfully", {
-    //     className: "bg-white text-black dark:bg-gray-800 dark:text-white",
-    //   });
-    //   setFormData({ confirmedPassword: "", email: "", password: "" });
-    //   push("/auth/sign-in");
-    // } else {
-    //   toast.error("email already exists", {
-    //     className: "bg-white text-black dark:bg-gray-800 dark:text-white",
-    //   });
-    // }
   };
 
   return (
     <section className="pt-36 pb-20">
       <ToastContainer />
       <div className="flex items-center justify-center">
-        <div className="p-8  w-80 md:w-96 rounded-lg ">
+        <div className="p-8  w-88 md:w-96 rounded-lg ">
           <h2 className="text-4xl text-white mb-6 text-center">Sign Up</h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
@@ -208,6 +190,17 @@ const SignUp = () => {
             >
               Register
             </button>
+            <div className="mt-5 text-sm font-medium">
+              <span className=" mr-1 md:mr-2 text-white">
+                Already have an account?
+              </span>{" "}
+              <Link
+                href="/auth/sign-in"
+                className="cursor-pointer text-blue-500 hover:underline dark:text-blue-300"
+              >
+                Log in
+              </Link>
+            </div>
           </form>
         </div>
       </div>

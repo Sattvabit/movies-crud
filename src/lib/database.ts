@@ -75,3 +75,8 @@ export async function deleteMovie(id: string) {
   const db = await openDB();
   await db.run("DELETE FROM movies WHERE id = ?", id);
 }
+
+export async function getMovieById(id: string) {
+  const db = await openDB();
+  return db.get("SELECT * FROM movies WHERE id = ?", id);
+}

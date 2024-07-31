@@ -1,6 +1,7 @@
 "use client";
 import { AppDispatch, RootState } from "@/store/store";
 import { validateEmail, validatePassword } from "@/utils/utils";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -71,7 +72,13 @@ function SignIn() {
       const data = await response.json();
       if (data.status === 200) {
         localStorage.setItem("token", data.token);
-        push("/");
+        toast.success("Logged in successfully", {
+          className: "bg-white text-black dark:bg-gray-800 dark:text-white",
+        });
+
+        setTimeout(() => {
+          push("/");
+        }, 2000);
       } else {
         toast.error("Wrong Credentials", {
           className: "bg-white text-black dark:bg-gray-800 dark:text-white",
@@ -154,6 +161,16 @@ function SignIn() {
             >
               Login
             </button>
+
+            <div className="text-sm font-medium mt-5  text-white">
+              Not registered yet?{" "}
+              <Link
+                href="/auth/sign-up"
+                className="cursor-pointer text-blue-500 hover:underline dark:text-blue-300"
+              >
+                Create account
+              </Link>
+            </div>
           </form>
         </div>
       </div>

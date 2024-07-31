@@ -1,3 +1,11 @@
+export interface Movie {
+  title: string;
+  year: string;
+  image: string;
+  id: number;
+  userId: number;
+}
+
 const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
